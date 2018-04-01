@@ -34,6 +34,7 @@ public class DataService {
                     Element elImage = elImages.get(0);
                     urun.setResimUrl(elImage.attr("data-original"));
                     urun.setBaslik(elUrun.select("a[class].plink").get(0).attr("title"));
+                    urun.setDetayLink(elUrun.select("a[class].plink").get(0).attr("href"));
                     urun.setFiyat(decimalFormat.parse(elUrun.select("a[class].newPrice").get(0).select("ins").get(0).html().replace("<span content=\"TRY\">TL</span>", "").trim()).doubleValue());
                     try {
                         urun.setEskiFiyat(decimalFormat.parse(elUrun.select("a[class].oldPrice").get(0).select("del").get(0).html().replace("TL", "").trim()).doubleValue());

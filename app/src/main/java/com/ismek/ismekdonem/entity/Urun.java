@@ -10,6 +10,7 @@ public class Urun {
 	private int indirimYuzdesi;
 	private int oylamaSayisi;
 	private int oylamaYuzdesi;
+	private String detayLink;
 	public String getResimUrl() {
 		return resimUrl;
 	}
@@ -58,11 +59,27 @@ public class Urun {
 	public void setOylamaYuzdesi(int oylamaYuzdesi) {
 		this.oylamaYuzdesi = oylamaYuzdesi;
 	}
-	@Override
-	public String toString() {
-		return "Urun [resimUrl=" + resimUrl + ", baslik=" + baslik + ", fiyat=" + fiyat + ", eskiFiyat=" + eskiFiyat
-				+ ", kargoBilgisi=" + kargoBilgisi + ", indirimYuzdesi=" + indirimYuzdesi + ", oylamaSayisi="
-				+ oylamaSayisi + ", oylamaYuzdesi=" + oylamaYuzdesi + "]";
+
+	public String getDetayLink() {
+		return detayLink;
 	}
 
+	public void setDetayLink(String detayLink) {
+		this.detayLink = detayLink;
+	}
+
+	@Override
+	public String toString() {
+		return "Urun{" +
+				"resimUrl='" + resimUrl + '\'' +
+				", baslik='" + baslik + '\'' +
+				", fiyat=" + fiyat +
+				", eskiFiyat=" + eskiFiyat +
+				", kargoBilgisi='" + kargoBilgisi + '\'' +
+				", indirimYuzdesi=" + indirimYuzdesi +
+				", oylamaSayisi=" + oylamaSayisi +
+				", oylamaYuzdesi=" + oylamaYuzdesi +
+				", detayLink='" + detayLink + '\'' +
+				'}';
+	}
 }
