@@ -14,8 +14,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".AnketActivity" />
         <activity android:name=".DinamikAnketActivity" />
-        <activity android:name=".HaberListActivity">
-        </activity>
+        <activity android:name=".HaberListActivity"></activity>
         <activity android:name=".HaberDetayActivity" />
         <activity android:name=".KategoriActivity">
             <intent-filter>
@@ -24,6 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".UrunListActivity"></activity>
     </application>
 
 </manifest>

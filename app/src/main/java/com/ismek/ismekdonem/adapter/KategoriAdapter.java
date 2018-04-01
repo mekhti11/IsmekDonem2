@@ -9,15 +9,18 @@ import android.widget.TextView;
 
 import com.ismek.ismekdonem.R;
 import com.ismek.ismekdonem.entity.Kategori;
+import com.ismek.ismekdonem.listener.HaberListener;
 
 import java.util.List;
 
 public class KategoriAdapter extends RecyclerView.Adapter<KategoriAdapter.KategoriHolder>{
 
     private List<Kategori> kategoriList;
+    private HaberListener haberListener;
 
-    public KategoriAdapter(List<Kategori> list){
+    public KategoriAdapter(List<Kategori> list, HaberListener listener){
         this.kategoriList = list;
+        this.haberListener = listener;
     }
 
     @Override
@@ -46,6 +49,12 @@ public class KategoriAdapter extends RecyclerView.Adapter<KategoriAdapter.Katego
             super(view);
             txtAdi = (TextView) view.findViewById(R.id.txtAdi);
             llContent = (LinearLayout) view.findViewById(R.id.llContent);
+            llContent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    haberListener.onDetail(view,getAdapterPosition());
+                }
+            });
         }
 
     }

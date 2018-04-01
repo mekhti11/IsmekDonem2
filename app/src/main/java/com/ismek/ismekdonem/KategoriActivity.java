@@ -1,12 +1,15 @@
 package com.ismek.ismekdonem;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.ismek.ismekdonem.adapter.KategoriAdapter;
 import com.ismek.ismekdonem.entity.Kategori;
+import com.ismek.ismekdonem.listener.HaberListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +29,17 @@ public class KategoriActivity extends AppCompatActivity {
 
         kategoriListeDoldur();
 
-        kategoriAdapter = new KategoriAdapter(kategoriList);
+        kategoriAdapter = new KategoriAdapter(kategoriList, new HaberListener() {
+            @Override
+            public void onDetail(View view, int position) {
+                Kategori kategori = kategoriList.get(position);
+                Intent i = new Intent(getApplicationContext(),UrunListActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("kategori",kategori);
+                i.putExtras(bundle);
+                startActivity(i);
+            }
+        });
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);

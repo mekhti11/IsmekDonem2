@@ -22,7 +22,7 @@ public class DataService {
         List<Urun> uruns = new ArrayList<>();
         try {
 
-            doc = Jsoup.connect("https://www.n11.com/bilgisayar").userAgent("Mozilla").get();
+            doc = Jsoup.connect(link).userAgent("Mozilla").get();
             Element elUrunUl = doc.select("div#view > ul").get(0);
             Elements elUrunList = elUrunUl.select("li");
             for (int i = 0; i < elUrunList.size(); i++) {
@@ -63,9 +63,8 @@ public class DataService {
                         Element elRating = elRatingList.get(0);
                         urun.setOylamaYuzdesi(Integer.parseInt(elRating.attr("class").replace("rating r", "")));
                     }
+                    uruns.add(urun);
                 }
-                uruns.add(urun);
-
             }
 
         } catch (IOException e) {
