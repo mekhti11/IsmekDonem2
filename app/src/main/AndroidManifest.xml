@@ -14,16 +14,18 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".AnketActivity" />
         <activity android:name=".DinamikAnketActivity" />
-        <activity android:name=".HaberListActivity"></activity>
+        <activity android:name=".HaberListActivity" />
         <activity android:name=".HaberDetayActivity" />
         <activity android:name=".KategoriActivity">
+        </activity>
+        <activity android:name=".UrunListActivity" />
+        <activity android:name=".OtelListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UrunListActivity"></activity>
     </application>
 
 </manifest>

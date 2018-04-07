@@ -1,5 +1,6 @@
 package com.ismek.ismekdonem.service;
 
+import com.ismek.ismekdonem.entity.Otel;
 import com.ismek.ismekdonem.entity.Urun;
 
 import org.jsoup.Jsoup;
@@ -73,6 +74,48 @@ public class DataService {
             e.printStackTrace();
         }
         return uruns;
+    }
+
+    public List<Otel> getOtelsByLink(String link){
+        DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+
+        Document doc;
+        List<Otel> otels = new ArrayList<>();
+        try {
+            doc = Jsoup.connect(link).userAgent("Mozilla").get();
+            Element elOtels = doc.select("div#HotelList").get(0);
+            Elements elOtelList = elOtels.select("article");
+            for (int i = 0; i < elOtelList.size(); i++) {
+                Element elOtel = elOtelList.get(i);
+                Otel otel = new Otel();
+                otel.setImageUrl(elOtel.select("img").get(0).attr("data-src"));
+                otel.setOtelAdi(elOtel.select("div[class].panel-heading").get(0).select("a").get(0).html());
+                otel.setLokasyon(elOtel.select("div[class].col-lg-5").get(0).select("p").get(0).html().replaceAll("<i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i> ", ""));
+                otel.setPromosyon(elOtel.select("p[class].erk-promo").get(0).html());
+                otel.setPuan(elOtel.select("div[class].score").get(0).select("span").get(0).html());
+                otel.setHostelType(elOtel.select("p[class].hostel-type").get(0).html());
+                otel.setFiyat(elOtel.select("p[class].currency").get(0).html().replaceAll("<small class=\"price-currency\">", "").replaceAll(" TL</small>", ""));
+                otel.setIndirimliFiyat(elOtel.select("p[class].discount-price").get(0).html().replaceAll("<small class=\"price-currency\">", "").replaceAll(" TL</small>", ""));
+                otel.setFiyatBilgi(elOtel.select("p[class].single-text").get(0).html());
+
+                Elements elOzellikler = elOtel.select("ul[class].hotelFeaturesList").get(0).select("li");
+                if (elOzellikler != null && elOzellikler.size() > 0) {
+                    List<String> ozellikler = new ArrayList<>();
+                    for (int j = 0; j < elOzellikler.size(); j++) {
+                        Element elOzellik = elOzellikler.get(j);
+                        ozellikler.add(elOzellik.html().replaceAll("<i class=\"hotelFeaturesTooltip-icon\"></i> ", ""));
+                    }
+                    otel.setOtelOzellikleri(ozellikler);
+                }
+                otel.setOtelDetay("https://www.tatilsepeti.com" + elOtel.select("a[class].btn-primary").get(0).attr("href"));
+                otels.add(otel);
+
+            }
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return otels;
     }
 
 }
