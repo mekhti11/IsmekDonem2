@@ -16,10 +16,11 @@
         <activity android:name=".DinamikAnketActivity" />
         <activity android:name=".HaberListActivity" />
         <activity android:name=".HaberDetayActivity" />
-        <activity android:name=".KategoriActivity">
-        </activity>
+        <activity android:name=".KategoriActivity"></activity>
         <activity android:name=".UrunListActivity" />
         <activity android:name=".OtelListActivity">
+        </activity>
+        <activity android:name=".OtelAramaActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

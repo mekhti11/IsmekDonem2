@@ -21,10 +21,16 @@ public class OtelListActivity extends AppCompatActivity {
     private List<Otel> otels;
     private ProgressDialog progressDialog;
 
+    private String lokasyon, basTarih, bitTarih;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otel_list);
+
+        lokasyon = getIntent().getStringExtra("lokasyon");
+        basTarih = getIntent().getStringExtra("basTarih");
+        bitTarih = getIntent().getStringExtra("bitTarih");
 
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
 
@@ -33,7 +39,7 @@ public class OtelListActivity extends AppCompatActivity {
         progressDialog.setTitle("Yükleniyor");
         progressDialog.setCancelable(false);
 
-        new AsyncGetOtels().execute("https://www.tatilsepeti.com/antalya-otelleri?ara=oda:2;tarih:01.06.2018,06.06.2018;click:true");
+        new AsyncGetOtels().execute("https://www.tatilsepeti.com/"+lokasyon+"-otelleri?ara=oda:2;tarih:"+basTarih+","+bitTarih+";click:true");
     }
 
     public class AsyncGetOtels extends AsyncTask<String,Void,List<Otel>>{

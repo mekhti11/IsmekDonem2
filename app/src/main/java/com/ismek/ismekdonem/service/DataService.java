@@ -23,7 +23,7 @@ public class DataService {
         List<Urun> uruns = new ArrayList<>();
         try {
 
-            doc = Jsoup.connect(link).userAgent("Mozilla").get();
+            doc = Jsoup.connect(link).userAgent("Mozilla").timeout(60000).get();
             Element elUrunUl = doc.select("div#view > ul").get(0);
             Elements elUrunList = elUrunUl.select("li");
             for (int i = 0; i < elUrunList.size(); i++) {
@@ -82,7 +82,7 @@ public class DataService {
         Document doc;
         List<Otel> otels = new ArrayList<>();
         try {
-            doc = Jsoup.connect(link).userAgent("Mozilla").get();
+            doc = Jsoup.connect(link).userAgent("Mozilla").timeout(60000).get();
             Element elOtels = doc.select("div#HotelList").get(0);
             Elements elOtelList = elOtels.select("article");
             for (int i = 0; i < elOtelList.size(); i++) {
@@ -92,11 +92,29 @@ public class DataService {
                 otel.setOtelAdi(elOtel.select("div[class].panel-heading").get(0).select("a").get(0).html());
                 otel.setLokasyon(elOtel.select("div[class].col-lg-5").get(0).select("p").get(0).html().replaceAll("<i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i> ", ""));
                 otel.setPromosyon(elOtel.select("p[class].erk-promo").get(0).html());
-                otel.setPuan(elOtel.select("div[class].score").get(0).select("span").get(0).html());
-                otel.setHostelType(elOtel.select("p[class].hostel-type").get(0).html());
-                otel.setFiyat(elOtel.select("p[class].currency").get(0).html().replaceAll("<small class=\"price-currency\">", "").replaceAll(" TL</small>", ""));
-                otel.setIndirimliFiyat(elOtel.select("p[class].discount-price").get(0).html().replaceAll("<small class=\"price-currency\">", "").replaceAll(" TL</small>", ""));
-                otel.setFiyatBilgi(elOtel.select("p[class].single-text").get(0).html());
+                try {
+                    otel.setPuan(elOtel.select("div[class].score").get(0).select("span").get(0).html());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                Elements elHostelTypeList = elOtel.select("p[class].hostel-type");
+                if (elHostelTypeList != null && elHostelTypeList.size() > 0)
+                    otel.setHostelType(elOtel.select("p[class].hostel-type").get(0).html());
+                try {
+                    otel.setFiyat(elOtel.select("p[class].currency").get(0).html().replaceAll("<small class=\"price-currency\">", "").replaceAll(" TL</small>", ""));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                try {
+                    otel.setIndirimliFiyat(elOtel.select("p[class].discount-price").get(0).html().replaceAll("<small class=\"price-currency\">", "").replaceAll(" TL</small>", ""));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                try {
+                    otel.setFiyatBilgi(elOtel.select("p[class].single-text").get(0).html());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
                 Elements elOzellikler = elOtel.select("ul[class].hotelFeaturesList").get(0).select("li");
                 if (elOzellikler != null && elOzellikler.size() > 0) {

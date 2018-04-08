@@ -41,11 +41,27 @@ public class OtelListAdapter extends RecyclerView.Adapter<OtelListAdapter.OtelVi
         holder.txtOtelAdi.setText(otel.getOtelAdi());
         holder.txtLokasyon.setText(otel.getLokasyon());
         holder.txtPromosyon.setText(otel.getPromosyon());
-        holder.txtPuan.setText(otel.getPuan() + " / 10");
         holder.txtHostelType.setText(otel.getHostelType());
-        holder.txtFiyat.setText(otel.getFiyat() + " TL");
-        holder.txtFiyat.setPaintFlags(holder.txtFiyat.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        holder.txtIndirimliFiyat.setText(otel.getIndirimliFiyat() + " TL");
+
+        if (otel.getFiyat() != null){
+            holder.txtFiyat.setText(otel.getFiyat() + " TL");
+            holder.txtFiyat.setPaintFlags(holder.txtFiyat.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }else{
+
+            holder.txtFiyat.setVisibility(View.GONE);
+        }
+        if (otel.getIndirimliFiyat() != null){
+            holder.txtIndirimliFiyat.setText(otel.getIndirimliFiyat() + " TL");
+        }else{
+            holder.txtIndirimliFiyat.setVisibility(View.GONE);
+        }
+        if (otel.getPuan() != null){
+            holder.txtPuan.setText(otel.getPuan() + " / 10");
+        }else{
+            holder.txtPuan.setVisibility(View.INVISIBLE);
+        }
+
+
         holder.txtFiyatBilgi.setText(otel.getFiyatBilgi());
         Picasso.with(context).load(otel.getImageUrl()).into(holder.imgOtel);
     }
