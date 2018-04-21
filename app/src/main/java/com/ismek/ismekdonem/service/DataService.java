@@ -1,5 +1,7 @@
 package com.ismek.ismekdonem.service;
 
+import android.util.Log;
+
 import com.ismek.ismekdonem.entity.Oda;
 import com.ismek.ismekdonem.entity.OdaGunFiyatBilgisi;
 import com.ismek.ismekdonem.entity.Otel;
@@ -173,11 +175,23 @@ public class DataService {
                     }
 
                     oda.setName(elOda.select("li[class].active").get(0).select("a").get(0).html());
-                    oda.setImage(elOda.select("div[class].roomImg").get(0).select("img").get(0).attr("src"));
+                    Elements elOdaImages = elOda.select("div[class].roomImg");
+                    if (elOdaImages != null && elOdaImages.size() > 0){
+                        Elements elImages2 = elOdaImages.get(0).select("img");
+                        if (elImages2 != null && elImages2.size() > 0){
+                            oda.setImage(elImages2.get(0).attr("src"));
+                        }
+
+                    }
+
                     oda.setKisiBasiIndirimliFiyat(elOda.select("div[class].price-panel__body__discount-price").html().replace("<small class=\"price-currency\">", "").replace("\n", "").trim().replace("</small>", "").trim());
                     oda.setKisiBasiFiyat(elOda.select("div[class].price-panel__body__old-price").html().replace("<small class=\"price-currency\">", "").replace("\n", "").trim().replace("</small>", "").trim());
                     oda.setToplamOdaFiyati(elOda.select("div[class].total-price").html().replace("<small class=\"price-currency\">", "").replace("\n", "").trim().replace("</small>", "").trim());
-                    oda.setIndirim(elOda.select("div[class].price-panel__body__tooltip").get(0).html());
+                    Elements elIndirims = elOda.select("div[class].price-panel__body__tooltip");
+                    if (elIndirims != null && elIndirims.size() > 0){
+                        oda.setIndirim(elIndirims.get(0).html());
+                    }
+
 
                     //Oda bilgileri cekiliyor
                     Element elOdaBilgiTemp = elOda.select("div[class].collapse-price-panel").get(0);
@@ -204,18 +218,27 @@ public class DataService {
                 otelDetail.setOdaList(odas);
 
             }
-            otelDetail.setHtmlKonumBilgileri(doc.select("div[class].location-info").get(0).html());
-            otelDetail.setHtmlOtelOzellikleri(doc.select("div[class].room-spect").get(0).html());
-            otelDetail.setHtmlUcretsizAktiviteler(doc.select("div[class].free-activities").get(0).html());
-            otelDetail.setHtmlUcretliAktiviteler(doc.select("div[class].paid-activities").get(0).html());
-            otelDetail.setHtmlCocukAktiviteleri(doc.select("div[class].activities-for-children").get(0).html());
-            otelDetail.setHtmlGuvencePaketi(doc.select("div#dev-insurance").get(0).html());
-            otelDetail.setHtmlKonaklamaOzellikleri(doc.select("div[class].accommodation").get(0).html());
+            otelDetail.setHtmlKonumBilgileri(findElementExist(doc,"div[class].location-info"));
+            otelDetail.setHtmlOtelOzellikleri(findElementExist(doc,"div[class].room-spect"));
+            otelDetail.setHtmlUcretsizAktiviteler(findElementExist(doc,"div[class].free-activities"));
+            otelDetail.setHtmlUcretliAktiviteler(findElementExist(doc,"div[class].paid-activities"));
+            otelDetail.setHtmlCocukAktiviteleri(findElementExist(doc,"div[class].activities-for-children"));
+            otelDetail.setHtmlGuvencePaketi(findElementExist(doc,"div#dev-insurance"));
+            otelDetail.setHtmlKonaklamaOzellikleri(findElementExist(doc,"div[class].accommodation"));
 
         }catch (Exception e) {
             e.printStackTrace();
+            Log.d("ISMEKKK",e.toString());
         }
         return otelDetail;
+    }
+
+    public String findElementExist(Element element,String text){
+        Elements elements =element.select(text);
+        if (elements != null && elements.size() > 0){
+            return elements.get(0).html();
+        }
+        return "";
     }
 
 }

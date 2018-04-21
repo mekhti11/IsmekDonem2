@@ -19,19 +19,21 @@
         <activity android:name=".KategoriActivity" />
         <activity android:name=".UrunListActivity" />
         <activity android:name=".OtelListActivity" />
-        <activity android:name=".OtelAramaActivity"></activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".LoggedActivity" />
-        <activity
-            android:name=".NoteListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".OtelAramaActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".YeniNotActivity"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoggedActivity" />
+        <activity
+            android:name=".NoteListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".YeniNotActivity" />
+        <activity android:name=".OtelDetayActivity"></activity>
     </application>
 
 </manifest>

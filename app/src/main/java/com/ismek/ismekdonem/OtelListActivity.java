@@ -1,6 +1,7 @@
 package com.ismek.ismekdonem;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +19,7 @@ import java.util.List;
 public class OtelListActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private List<Otel> otels;
+    private List<Otel> otelss;
     private ProgressDialog progressDialog;
 
     private String lokasyon, basTarih, bitTarih;
@@ -60,11 +61,15 @@ public class OtelListActivity extends AppCompatActivity {
         protected void onPostExecute(List<Otel> otels) {
             super.onPostExecute(otels);
             progressDialog.dismiss();
+            otelss = otels;
 
             OtelListAdapter adapter = new OtelListAdapter(OtelListActivity.this, otels, new HaberListener() {
                 @Override
                 public void onDetail(View view, int position) {
-
+                    Otel selectedOtel = otelss.get(position);
+                    Intent i = new Intent(OtelListActivity.this,OtelDetayActivity.class);
+                    i.putExtra("otel",selectedOtel);
+                    startActivity(i);
                 }
             });
 

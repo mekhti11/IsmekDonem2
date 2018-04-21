@@ -1,8 +1,11 @@
 package com.ismek.ismekdonem.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-public class Otel {
+public class Otel implements Parcelable {
 
     private String imageUrl;
 	private String otelAdi;
@@ -96,4 +99,52 @@ public class Otel {
 				+ ", otelOzellikleri=" + otelOzellikleri + ", otelDetay=" + otelDetay + "]";
 	}
 
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(this.imageUrl);
+		dest.writeString(this.otelAdi);
+		dest.writeString(this.lokasyon);
+		dest.writeString(this.promosyon);
+		dest.writeString(this.puan);
+		dest.writeString(this.hostelType);
+		dest.writeString(this.fiyat);
+		dest.writeString(this.indirimliFiyat);
+		dest.writeString(this.fiyatBilgi);
+		dest.writeStringList(this.otelOzellikleri);
+		dest.writeString(this.otelDetay);
+	}
+
+	public Otel() {
+	}
+
+	protected Otel(Parcel in) {
+		this.imageUrl = in.readString();
+		this.otelAdi = in.readString();
+		this.lokasyon = in.readString();
+		this.promosyon = in.readString();
+		this.puan = in.readString();
+		this.hostelType = in.readString();
+		this.fiyat = in.readString();
+		this.indirimliFiyat = in.readString();
+		this.fiyatBilgi = in.readString();
+		this.otelOzellikleri = in.createStringArrayList();
+		this.otelDetay = in.readString();
+	}
+
+	public static final Parcelable.Creator<Otel> CREATOR = new Parcelable.Creator<Otel>() {
+		@Override
+		public Otel createFromParcel(Parcel source) {
+			return new Otel(source);
+		}
+
+		@Override
+		public Otel[] newArray(int size) {
+			return new Otel[size];
+		}
+	};
 }
