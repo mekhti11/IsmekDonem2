@@ -16,17 +16,22 @@
         <activity android:name=".DinamikAnketActivity" />
         <activity android:name=".HaberListActivity" />
         <activity android:name=".HaberDetayActivity" />
-        <activity android:name=".KategoriActivity"></activity>
+        <activity android:name=".KategoriActivity" />
         <activity android:name=".UrunListActivity" />
-        <activity android:name=".OtelListActivity">
-        </activity>
-        <activity android:name=".OtelAramaActivity">
+        <activity android:name=".OtelListActivity" />
+        <activity android:name=".OtelAramaActivity"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoggedActivity" />
+        <activity
+            android:name=".NoteListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".YeniNotActivity"></activity>
     </application>
 
 </manifest>

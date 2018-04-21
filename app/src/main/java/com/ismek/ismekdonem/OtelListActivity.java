@@ -60,6 +60,7 @@ public class OtelListActivity extends AppCompatActivity {
         protected void onPostExecute(List<Otel> otels) {
             super.onPostExecute(otels);
             progressDialog.dismiss();
+
             OtelListAdapter adapter = new OtelListAdapter(OtelListActivity.this, otels, new HaberListener() {
                 @Override
                 public void onDetail(View view, int position) {

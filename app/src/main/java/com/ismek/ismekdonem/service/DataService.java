@@ -1,6 +1,9 @@
 package com.ismek.ismekdonem.service;
 
+import com.ismek.ismekdonem.entity.Oda;
+import com.ismek.ismekdonem.entity.OdaGunFiyatBilgisi;
 import com.ismek.ismekdonem.entity.Otel;
+import com.ismek.ismekdonem.entity.OtelDetail;
 import com.ismek.ismekdonem.entity.Urun;
 
 import org.jsoup.Jsoup;
@@ -134,6 +137,85 @@ public class DataService {
             e.printStackTrace();
         }
         return otels;
+    }
+
+    public OtelDetail getOtelDetail(String link){
+        OtelDetail otelDetail = new OtelDetail();
+        Document doc;
+        try {
+            doc = Jsoup.connect(link).userAgent("Mozilla").timeout(60000).get();
+
+
+            Elements elOtelImages = doc.select("div[class].photo-gallery").get(0).select("div[class].item");
+
+            //Otel resimleri cekiliyor
+            if (elOtelImages != null && elOtelImages.size()>0) {
+                List<String> otelImages = new ArrayList<>();
+                for (int i = 0; i < elOtelImages.size(); i++) {
+                    otelImages.add(elOtelImages.get(i).select("img").get(0).attr("data-src"));
+                }
+                otelDetail.setImageList(otelImages);
+            }
+
+            //Odalar cekiliyor
+            Elements elOdalar = doc.select("div#dev-roomList").get(0).select("div#roomContainer");
+            if (elOdalar != null && elOdalar.size() > 0) {
+                List<Oda> odas = new ArrayList<>();
+                for (int i = 0; i < elOdalar.size(); i++) {
+                    Oda oda = new Oda();
+                    Element elOda = elOdalar.get(i);
+
+                    Elements elOdaKapasitesiList = elOda.select("div[class].well");
+                    if (elOdaKapasitesiList != null && elOdaKapasitesiList.size() > 0) {
+                        oda.setOdaKapasitesi(elOdaKapasitesiList.get(0).html());
+                    }else{
+                        continue;
+                    }
+
+                    oda.setName(elOda.select("li[class].active").get(0).select("a").get(0).html());
+                    oda.setImage(elOda.select("div[class].roomImg").get(0).select("img").get(0).attr("src"));
+                    oda.setKisiBasiIndirimliFiyat(elOda.select("div[class].price-panel__body__discount-price").html().replace("<small class=\"price-currency\">", "").replace("\n", "").trim().replace("</small>", "").trim());
+                    oda.setKisiBasiFiyat(elOda.select("div[class].price-panel__body__old-price").html().replace("<small class=\"price-currency\">", "").replace("\n", "").trim().replace("</small>", "").trim());
+                    oda.setToplamOdaFiyati(elOda.select("div[class].total-price").html().replace("<small class=\"price-currency\">", "").replace("\n", "").trim().replace("</small>", "").trim());
+                    oda.setIndirim(elOda.select("div[class].price-panel__body__tooltip").get(0).html());
+
+                    //Oda bilgileri cekiliyor
+                    Element elOdaBilgiTemp = elOda.select("div[class].collapse-price-panel").get(0);
+                    Elements elOdaGunFiyatBilgisiList = elOdaBilgiTemp.select("div[class].price-panel");
+                    if (elOdaGunFiyatBilgisiList != null && elOdaGunFiyatBilgisiList.size() > 0) {
+                        List<OdaGunFiyatBilgisi> odaGunFiyatBilgisiList = new ArrayList<>();
+                        for (int j = 0; j < elOdaGunFiyatBilgisiList.size(); j++) {
+                            OdaGunFiyatBilgisi odaGunFiyatBilgisi = new OdaGunFiyatBilgisi();
+                            Element elOdaGunFiyatBilgisi = elOdaGunFiyatBilgisiList.get(j);
+                            odaGunFiyatBilgisi.setGun(elOdaGunFiyatBilgisi.select("div[class].price-panel__head").get(0).html());
+                            odaGunFiyatBilgisi.setFiyat(elOdaGunFiyatBilgisi.select("div[class].price-panel__body").get(0).html().replace("<small class=\"price-currency\">", "").replace("\n", "").trim().replace("</small>", "").trim());
+                            if (elOdaGunFiyatBilgisi.attr("title") == null || "".equals(elOdaGunFiyatBilgisi.attr("title"))) {
+                                odaGunFiyatBilgisi.setMusait(true);
+                            }else{
+                                odaGunFiyatBilgisi.setMusait(false);
+                            }
+                            odaGunFiyatBilgisiList.add(odaGunFiyatBilgisi);
+                        }
+                        oda.setOdaGunFiyatBilgisiList(odaGunFiyatBilgisiList);
+                    }
+
+                    odas.add(oda);
+                }
+                otelDetail.setOdaList(odas);
+
+            }
+            otelDetail.setHtmlKonumBilgileri(doc.select("div[class].location-info").get(0).html());
+            otelDetail.setHtmlOtelOzellikleri(doc.select("div[class].room-spect").get(0).html());
+            otelDetail.setHtmlUcretsizAktiviteler(doc.select("div[class].free-activities").get(0).html());
+            otelDetail.setHtmlUcretliAktiviteler(doc.select("div[class].paid-activities").get(0).html());
+            otelDetail.setHtmlCocukAktiviteleri(doc.select("div[class].activities-for-children").get(0).html());
+            otelDetail.setHtmlGuvencePaketi(doc.select("div#dev-insurance").get(0).html());
+            otelDetail.setHtmlKonaklamaOzellikleri(doc.select("div[class].accommodation").get(0).html());
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return otelDetail;
     }
 
 }
