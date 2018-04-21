@@ -1,7 +1,5 @@
 package com.ismek.ismekdonem.service;
 
-import android.util.Log;
-
 import com.ismek.ismekdonem.entity.Oda;
 import com.ismek.ismekdonem.entity.OdaGunFiyatBilgisi;
 import com.ismek.ismekdonem.entity.Otel;
@@ -185,7 +183,7 @@ public class DataService {
                     }
 
                     oda.setKisiBasiIndirimliFiyat(elOda.select("div[class].price-panel__body__discount-price").html().replace("<small class=\"price-currency\">", "").replace("\n", "").trim().replace("</small>", "").trim());
-                    oda.setKisiBasiFiyat(elOda.select("div[class].price-panel__body__old-price").html().replace("<small class=\"price-currency\">", "").replace("\n", "").trim().replace("</small>", "").trim());
+                    oda.setKisiBasiFiyat(elOda.select("div[class].price-panel__body__discount-price").html().replace("<small class=\"price-currency\">", "").replace("\n", "").trim().replace("</small>", "").trim());
                     oda.setToplamOdaFiyati(elOda.select("div[class].total-price").html().replace("<small class=\"price-currency\">", "").replace("\n", "").trim().replace("</small>", "").trim());
                     Elements elIndirims = elOda.select("div[class].price-panel__body__tooltip");
                     if (elIndirims != null && elIndirims.size() > 0){
@@ -228,7 +226,6 @@ public class DataService {
 
         }catch (Exception e) {
             e.printStackTrace();
-            Log.d("ISMEKKK",e.toString());
         }
         return otelDetail;
     }
